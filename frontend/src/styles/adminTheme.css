@@ -1,0 +1,55 @@
+/* src/styles/adminTheme.css */
+
+/* The whole admin area will use these variables */
+:root {
+  --adm-bg: radial-gradient(1200px 600px at 20% 0%, rgba(249,115,22,0.18), transparent 60%),
+            radial-gradient(1000px 500px at 90% 30%, rgba(59,130,246,0.16), transparent 55%),
+            linear-gradient(180deg, #0b1220 0%, #070b14 100%);
+
+  --adm-surface: rgba(255, 255, 255, 0.06);
+  --adm-surface-2: rgba(255, 255, 255, 0.08);
+  --adm-border: rgba(255, 255, 255, 0.10);
+  --adm-border-strong: rgba(255, 255, 255, 0.16);
+
+  --adm-text: rgba(255, 255, 255, 0.92);
+  --adm-muted: rgba(255, 255, 255, 0.62);
+
+  --adm-shadow: 0 16px 40px rgba(0, 0, 0, 0.40);
+
+  --adm-accent: #f97316;
+  --adm-accent-2: #60a5fa;
+  --adm-good: #34d399;
+  --adm-bad: #fb7185;
+
+  --adm-radius: 16px;
+}
+
+/* A wrapper class that applies the theme */
+.adminShell {
+  min-height: 100vh;
+  background: var(--adm-bg);
+  color: var(--adm-text);
+}
+
+/* Helpful defaults for cards/buttons (optional but nice) */
+.adminCard {
+  background: var(--adm-surface);
+  border: 1px solid var(--adm-border);
+  border-radius: var(--adm-radius);
+  box-shadow: var(--adm-shadow);
+  backdrop-filter: blur(12px);
+}
+
+.adminBtn {
+  border: 1px solid var(--adm-border-strong);
+  background: rgba(255,255,255,0.06);
+  color: var(--adm-text);
+  border-radius: 12px;
+  padding: 10px 12px;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.adminBtn:hover {
+  background: rgba(255,255,255,0.10);
+}

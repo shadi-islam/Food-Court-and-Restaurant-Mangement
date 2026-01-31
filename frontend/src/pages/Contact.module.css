@@ -1,0 +1,249 @@
+.page {
+  padding: 60px 0 48px;
+}
+
+/* HERO */
+.hero {
+  height: 270px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  background: radial-gradient(
+      900px 300px at 20% 30%,
+      rgba(245, 158, 11, 0.30),
+      transparent 60%
+    ),
+    radial-gradient(
+      900px 300px at 80% 20%,
+      rgba(99, 102, 241, 0.22),
+      transparent 60%
+    ),
+    linear-gradient(120deg, #0b1220, #111827);
+}
+
+.heroOverlay {
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.heroContent {
+  width: min(100% - 32px, 1100px);
+  margin: 0 auto;
+  color: #fff;
+}
+
+.kicker {
+  margin: 0 0 8px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.title {
+  margin: 0;
+  font-size: clamp(30px, 4vw, 48px);
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  font-weight: 900;
+}
+
+.subtitle {
+  margin: 10px 0 0;
+  max-width: 560px;
+  color: rgba(255, 255, 255, 0.78);
+  font-weight: 600;
+}
+
+/* LAYOUT */
+.container {
+  width: min(100% - 32px, 1100px);
+  margin: 0 auto;
+  padding: 28px 0 0;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  gap: 18px;
+}
+
+@media (max-width: 900px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* SECTION CARD */
+.section {
+  background: #fff;
+  border: 1px solid rgba(0, 0, 0, 0.10);
+  border-radius: 16px;
+  padding: 18px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
+}
+
+.sectionTitle {
+  font-size: 18px;
+  font-weight: 900;
+  margin: 0 0 6px;
+  letter-spacing: -0.01em;
+}
+
+.sectionHint {
+  margin: 0 0 14px;
+  color: rgba(0, 0, 0, 0.60);
+  font-weight: 600;
+  line-height: 1.45;
+}
+
+/* FORM */
+.form {
+  display: grid;
+  gap: 12px;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+@media (max-width: 640px) {
+  .row {
+    grid-template-columns: 1fr;
+  }
+}
+
+.field {
+  display: grid;
+  gap: 6px;
+}
+
+.label {
+  font-size: 12px;
+  font-weight: 800;
+  color: rgba(0, 0, 0, 0.68);
+}
+
+.input,
+.textarea {
+  width: 100%;
+  padding: 12px 12px;
+  border: 1px solid rgba(0, 0, 0, 0.14);
+  border-radius: 12px;
+  outline: none;
+  background: #fff;
+  font-size: 14px;
+}
+
+.input:focus,
+.textarea:focus {
+  border-color: rgba(17, 24, 39, 0.35);
+  box-shadow: 0 0 0 4px rgba(17, 24, 39, 0.08);
+}
+
+.textarea {
+  resize: vertical;
+  min-height: 120px;
+}
+
+.button {
+  height: 46px;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  font-weight: 900;
+  color: #0b1220;
+  background: #f59e0b;
+  transition: transform 0.08s ease, filter 0.2s ease;
+}
+
+.button:hover {
+  filter: brightness(0.98);
+}
+
+.button:active {
+  transform: translateY(1px);
+}
+
+/* INFO LIST */
+.infoList {
+  display: grid;
+  gap: 12px;
+  margin-top: 10px;
+}
+
+.infoItem {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  padding: 12px;
+  border-radius: 14px;
+  border: 1px solid rgba(0, 0, 0, 0.10);
+  background: rgba(0, 0, 0, 0.02);
+}
+
+.iconWrap {
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(245, 158, 11, 0.18);
+  color: #b45309;
+}
+
+.icon {
+  width: 18px;
+  height: 18px;
+}
+
+.infoLabel {
+  color: rgba(0, 0, 0, 0.62);
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.infoValue {
+  margin-top: 2px;
+  font-weight: 900;
+  color: rgba(0, 0, 0, 0.82);
+}
+
+/* EXTRA CARD */
+.mapCard {
+  margin-top: 14px;
+  border-radius: 16px;
+  border: 1px solid rgba(0, 0, 0, 0.10);
+  overflow: hidden;
+}
+
+.mapTop {
+  padding: 12px;
+  background: rgba(0, 0, 0, 0.02);
+}
+
+.mapTitle {
+  font-weight: 900;
+}
+
+.mapSub {
+  margin-top: 2px;
+  color: rgba(0, 0, 0, 0.6);
+  font-weight: 700;
+  font-size: 13px;
+}
+
+.mapFrame {
+  height: 240px;
+  background: #fff;
+}
+
+.mapFrame iframe {
+  width: 100%;
+  height: 100%;
+  border: 0;
+  display: block;
+}

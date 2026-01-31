@@ -1,0 +1,354 @@
+/* Navbar.module.css */
+:root {
+  scroll-behavior: smooth;
+}
+
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 80;
+  padding-top: 0px;
+}
+
+/* Floating pill */
+.nav {
+  position: fixed;
+  top: 8px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 95vw;
+  min-width: 380px;
+  max-width: 1440px;
+
+  height: 64px;
+  padding: 12px 16px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+
+  border-radius: 999px;
+  border: 2px solid rgba(255, 255, 255, 0.35);
+  background: rgba(15, 23, 42, 0.65);
+  backdrop-filter: blur(8px);
+
+  box-shadow: 0 10px 20px -10px rgba(0, 0, 0, 0.9);
+  color: #fff;
+
+  z-index: 100; /* ✅ ensure stacking context */
+}
+
+/* Brand pill on left */
+.brand {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 14px 8px 10px;
+
+  text-decoration: none;
+  color: #fff;
+}
+
+.brand:hover {
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.14);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+}
+
+.brandIcon {
+  width: 36px;
+  height: 36px;
+  border-radius: 999px;
+  object-fit: cover;
+  overflow: hidden;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.brandLogo {
+  width: 44px;
+  height: 44px;
+  object-fit: cover;
+  padding: 2px;
+}
+
+.brandName {
+  font-weight: 900;
+  letter-spacing: -0.02em;
+  font-size: clamp(1.1rem, calc(2vw + 0.1rem), 1.6rem);
+  white-space: nowrap;
+  color: #caa25c;
+}
+
+/* Desktop menu center */
+.menu {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  border-radius: 999px;
+  padding: 8px;
+}
+
+.menuItem {
+  margin: 0;
+}
+
+.menuLink {
+  display: grid;
+  place-content: center;
+  padding: 10px 14px;
+  border-radius: 999px;
+
+  text-decoration: none;
+  color: rgba(255, 255, 255, 0.92);
+  font-weight: 800;
+  letter-spacing: -0.01em;
+
+  transition: background 0.18s ease, color 0.18s ease, transform 0.12s ease;
+}
+
+.menuLink:hover {
+  background: #f59e0b;
+  color: #0b1220;
+}
+
+.active {
+  background: rgba(255, 255, 255, 0.16);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+}
+
+/* Right side actions */
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Cart */
+.cartBtn {
+  position: relative;
+  width: 44px;
+  height: 44px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  background: rgba(255, 255, 255, 0.10);
+  color: #fff;
+  cursor: pointer;
+  z-index: 10000;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  transition: transform 0.12s ease, background 0.16s ease;
+  overflow: visible; /* ✅ */
+}
+
+.cartBtn:hover {
+  background: rgba(255, 255, 255, 0.16);
+  transform: translateY(-1px);
+}
+
+.badge {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  min-width: 20px;
+  height: 20px;
+  padding: 0 6px;
+  border-radius: 999px;
+  background: #f97316;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 900;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid rgba(15, 23, 42, 0.75);
+
+  pointer-events: none; /* ✅ prevents badge from breaking hover/click */
+  z-index: 2;
+}
+
+/* Profile / Login */
+.profileWrap {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+
+/* ✅ Hover bridge so cursor doesn't drop between button & dropdown */
+.profileWrap::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  top: 44px; /* below the profile button */
+  width: 220px; /* match dropdown width */
+  height: 16px; /* smoother transition zone */
+}
+
+.profileBtn {
+  width: 44px;
+  height: 44px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  background: rgba(255, 255, 255, 0.10);
+  color: #fff;
+  cursor: pointer;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.profileBtn:hover {
+  background: rgba(255, 255, 255, 0.16);
+}
+
+.loginBtn {
+  height: 44px;
+  padding: 0 16px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  background: rgba(255, 255, 255, 0.12);
+  color: #fff;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.loginBtn:hover {
+  background: rgba(255, 255, 255, 0.18);
+}
+
+/* Dropdown */
+.dropdown {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 12px);
+  width: 220px;
+
+  background: rgba(15, 23, 42, 0.82);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 18px;
+  box-shadow: 0 18px 44px rgba(0, 0, 0, 0.35);
+  backdrop-filter: blur(10px);
+
+  padding: 10px;
+
+  z-index: 200; /* ✅ always above */
+}
+
+.dropdownItem {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+
+  padding: 10px 12px;
+  border-radius: 14px;
+
+  text-decoration: none;
+  color: rgba(255, 255, 255, 0.92);
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+  font-weight: 800;
+
+  transition: background 0.16s ease;
+}
+
+.dropdownItem:hover {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.logout {
+  color: #fecaca;
+}
+
+.logout:hover {
+  background: rgba(220, 38, 38, 0.18);
+}
+
+/* Mobile toggle */
+.mobileToggle {
+  display: none;
+  width: 44px;
+  height: 44px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  background: rgba(255, 255, 255, 0.10);
+  color: #fff;
+  cursor: pointer;
+}
+
+.mobileToggle:hover {
+  background: rgba(255, 255, 255, 0.16);
+}
+
+/* Backdrop */
+.backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.25);
+  border: 0;
+  padding: 0;
+  cursor: default;
+  z-index: 70;
+}
+
+/* Mobile behavior */
+@media (max-width: 860px) {
+  .mobileToggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .menu {
+    position: absolute;
+    left: 50%;
+    top: 64px;
+    transform: translateX(-50%);
+    width: calc(95vw - 32px);
+    max-width: 520px;
+
+    display: grid;
+    gap: 10px;
+    padding: 14px;
+
+    border-radius: 18px;
+    background: rgba(15, 23, 42, 0.82);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+
+    opacity: 0;
+    pointer-events: none;
+    translate: 0 -8px;
+    transition: opacity 0.18s ease, translate 0.18s ease;
+  }
+
+  .nav.open .menu {
+    opacity: 1;
+    pointer-events: auto;
+    translate: 0 0;
+  }
+
+  .menuLink {
+    padding: 12px 14px;
+    background: rgba(255, 255, 255, 0.08);
+  }
+
+  .menuLink:hover {
+    background: rgba(167, 243, 208, 0.9);
+  }
+
+  .brandName {
+    display: none;
+  }
+}

@@ -1,0 +1,259 @@
+.page {
+  padding: 100px 0 40px;
+}
+
+.container {
+  width: min(100% - 32px, 1120px);
+  margin-inline: auto;
+}
+
+.header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 18px;
+}
+
+.title {
+  margin: 0;
+  font-size: clamp(22px, 3vw, 34px);
+  font-weight: 900;
+  letter-spacing: -0.02em;
+}
+
+.subtitle {
+  margin: 6px 0 0;
+  color: rgba(0, 0, 0, 0.6);
+  font-size: 14px;
+}
+
+.refreshBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 40px;
+  padding: 0 14px;
+  border-radius: 999px;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  background: #fff;
+  cursor: pointer;
+  font-weight: 700;
+}
+.refreshBtn:hover {
+  background: rgba(0, 0, 0, 0.03);
+}
+
+.list {
+  display: grid;
+  gap: 16px;
+}
+
+.card {
+  background: #fff;
+  border: 1px solid rgba(0, 0, 0, 0.10);
+  border-radius: 18px;
+  padding: 16px;
+  box-shadow: 0 10px 26px rgba(0, 0, 0, 0.06);
+}
+
+.head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 14px;
+}
+
+.orderTitle {
+  font-weight: 900;
+  color: #111827;
+  letter-spacing: -0.01em;
+}
+
+.orderId {
+  font-weight: 900;
+}
+
+.dot {
+  margin: 0 10px;
+  opacity: 0.6;
+}
+
+.tableNo {
+  font-weight: 900;
+}
+
+.meta {
+  margin-top: 6px;
+  font-size: 13px;
+  color: rgba(0, 0, 0, 0.6);
+}
+
+.statusPill {
+  display: inline-flex;
+  align-items: center;
+  padding: 8px 12px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 900;
+  background: rgba(245, 158, 11, 0.16);
+  color: #7c4a03;
+  border: 1px solid rgba(245, 158, 11, 0.25);
+  white-space: nowrap;
+}
+
+.progressWrap {
+  margin-top: 14px;
+}
+
+.progressTrack {
+  height: 10px;
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.07);
+  overflow: hidden;
+}
+
+.progressFill {
+  height: 100%;
+  width: 0%;
+  border-radius: 999px;
+  background: #f59e0b;
+  transition: width 0.25s ease;
+}
+
+.stepper {
+  margin-top: 14px;
+  display: grid;
+  gap: 10px;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  text-align: center;
+  padding: 10px 8px;
+  border-radius: 14px;
+  border: 1px solid transparent;
+}
+
+.stepIcon {
+  width: 34px;
+  height: 34px;
+  border-radius: 999px;
+  display: grid;
+  place-items: center;
+}
+
+.stepLabel {
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.step_done {
+  background: rgba(34, 197, 94, 0.10);
+  border-color: rgba(34, 197, 94, 0.20);
+}
+.step_done .stepIcon {
+  background: rgba(34, 197, 94, 0.18);
+}
+.step_done .stepLabel {
+  color: #0f5132;
+}
+
+.step_active {
+  background: rgba(245, 158, 11, 0.12);
+  border-color: rgba(245, 158, 11, 0.25);
+}
+.step_active .stepIcon {
+  background: rgba(245, 158, 11, 0.22);
+}
+.step_active .stepLabel {
+  color: #7c4a03;
+}
+
+.step_todo {
+  background: rgba(0, 0, 0, 0.03);
+  border-color: rgba(0, 0, 0, 0.06);
+  opacity: 0.85;
+}
+.step_todo .stepIcon {
+  background: rgba(0, 0, 0, 0.06);
+}
+.step_todo .stepLabel {
+  color: rgba(0, 0, 0, 0.55);
+}
+
+.details {
+  margin-top: 14px;
+  display: grid;
+  gap: 12px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.detail {
+  border-radius: 14px;
+  padding: 12px;
+  background: rgba(0, 0, 0, 0.03);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.label {
+  font-size: 12px;
+  color: rgba(0, 0, 0, 0.55);
+  font-weight: 800;
+}
+
+.value {
+  margin-top: 6px;
+  font-weight: 800;
+  color: #111827;
+}
+
+.valueStrong {
+  margin-top: 6px;
+  font-weight: 900;
+  font-size: 16px;
+  color: #111827;
+}
+
+/* empty */
+.empty {
+  padding: 30px 0;
+  display: grid;
+  place-items: center;
+}
+
+.emptyCard {
+  width: min(520px, 100%);
+  background: #fff;
+  border: 1px solid rgba(0, 0, 0, 0.10);
+  border-radius: 18px;
+  padding: 22px;
+  text-align: center;
+  box-shadow: 0 10px 26px rgba(0, 0, 0, 0.06);
+}
+
+.emptyTitle {
+  margin: 0;
+  font-weight: 900;
+  font-size: 18px;
+}
+
+.emptyText {
+  margin: 10px 0 0;
+  color: rgba(0, 0, 0, 0.6);
+  font-size: 14px;
+}
+
+/* responsive */
+@media (max-width: 900px) {
+  .stepper {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .details {
+    grid-template-columns: 1fr;
+  }
+}

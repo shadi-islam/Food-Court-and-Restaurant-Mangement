@@ -1,0 +1,212 @@
+:root {
+  --primary: #6366f1;
+  --primary-soft: #eef2ff;
+  --success: #10b981;
+  --success-soft: #ecfdf5;
+  --danger: #ef4444;
+  --danger-soft: #fef2f2;
+  --text-main: #1e293b;
+  --text-muted: #64748b;
+  --border: #e2e8f0;
+}
+
+.page {
+  animation: fadeIn 0.4s ease-out;
+  padding: 32px 0; /* Vertical breathing room */
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 28px;
+  gap: 16px;
+}
+
+.titleGroup {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.titleIcon { color: var(--primary); }
+
+.title {
+  font-size: 24px;
+  font-weight: 800;
+  color: var(--text-main);
+  margin: 0;
+  letter-spacing: -0.025em;
+}
+
+.searchBar {
+  display: flex;
+  align-items: center;
+  background: #fff;
+  border: 1px solid var(--border);
+  padding: 10px 16px;
+  border-radius: 12px;
+  gap: 12px;
+  width: 100%;
+  max-width: 320px;
+  color: var(--text-muted);
+}
+
+.searchBar input {
+  border: none;
+  outline: none;
+  font-size: 14px;
+  width: 100%;
+  color: var(--text-main);
+}
+
+/* Perfect alignment fix for the Card and Table */
+.card {
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+}
+
+.tableWrapper { overflow-x: auto; }
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table th {
+  background: #f8fafc;
+  padding: 16px 24px; /* Uniform padding */
+  text-align: left;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  border-bottom: 1px solid var(--border);
+  letter-spacing: 0.05em;
+}
+
+.table th:nth-child(3) { /* Targeting the PRICE column header */
+  text-align: right;
+  padding-right: 40px; /* Matches the cell padding below */
+}
+
+.table td {
+  padding: 16px 24px; /* Matches TH exactly */
+  border-bottom: 1px solid var(--border);
+  vertical-align: middle;
+}
+
+.row:hover { background: #fafafa; }
+
+/* Content alignment */
+.itemCell {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.thumb {
+  width: 48px;
+  height: 48px;
+  object-fit: cover;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  flex-shrink: 0;
+}
+
+.itemName {
+  font-weight: 700;
+  color: var(--text-main);
+  font-size: 15px;
+}
+
+.itemDesc {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.categoryBadge {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-muted);
+  background: #f1f5f9;
+  padding: 4px 10px;
+  border-radius: 6px;
+  display: inline-block;
+}
+
+/* Perfect price alignment */
+.priceCell {
+  font-weight: 800;
+  color: var(--text-main);
+  font-size: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 4px;
+  width: 100%;
+  
+  padding-right: 15px; /* Matches the TH padding */
+  font-variant-numeric: tabular-nums; /* Ensures numbers stack perfectly */
+}
+
+/* Status Pill Alignment */
+.statusBadge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: all 0.2s;
+  min-width: 100px; /* Forces status to be consistent */
+}
+.taka { 
+  font-weight: 900; 
+  margin-right: 4px; 
+}
+
+
+.active { background: var(--success-soft); color: var(--success); }
+.active:hover { background: var(--success); color: #fff; }
+
+.hidden { background: #f1f5f9; color: var(--text-muted); border-color: var(--border); }
+
+/* Action Alignment */
+.actionGroup {
+  display: flex;
+  gap: 8px;
+  justify-content: center; /* Centers actions under the header */
+}
+
+.editBtn, .deleteBtn {
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.2s;
+  border: none;
+}
+
+.editBtn { background: var(--primary-soft); color: var(--primary); }
+.editBtn:hover { background: var(--primary); color: #fff; }
+
+.deleteBtn { background: var(--danger-soft); color: var(--danger); }
+.deleteBtn:hover { background: var(--danger); color: #fff; }
+
+.centerAlign { text-align: center !important; }
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}

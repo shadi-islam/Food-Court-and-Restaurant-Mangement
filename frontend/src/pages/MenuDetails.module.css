@@ -1,0 +1,311 @@
+.page {
+  padding: 90px 0 40px;
+}
+
+.containerTop,
+.container {
+  width: min(100% - 32px, 1100px);
+  margin-inline: auto;
+}
+
+.backLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  background: #fff;
+  padding: 10px 14px;
+  border-radius: 999px;
+  cursor: pointer;
+  font-weight: 900;
+  color: rgba(0, 0, 0, 0.8);
+  box-shadow: 0 8px 18px rgba(0,0,0,0.06);
+}
+
+.backLink:hover {
+  background: rgba(0,0,0,0.04);
+}
+
+.backIcon {
+  width: 18px;
+  height: 18px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 420px 1fr;
+  gap: 22px;
+  margin-top: 16px;
+}
+
+.media {}
+
+.sticky {
+  position: sticky;
+  top: 120px;
+}
+
+.imageCard {
+  position: relative;
+  background: #fff;
+  border: 1px solid rgba(0,0,0,0.10);
+  border-radius: 18px;
+  overflow: hidden;
+  box-shadow: 0 12px 28px rgba(0,0,0,0.08);
+}
+
+.image {
+  width: 100%;
+  height: 420px;
+  object-fit: cover;
+  display: block;
+}
+
+.badgeWrap {
+  position: absolute;
+  left: 14px;
+  bottom: 14px;
+}
+
+.badgeAvailable,
+.badgeUnavailable {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 900;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255,255,255,0.35);
+}
+
+.badgeAvailable {
+  background: rgba(16, 185, 129, 0.20);
+  color: #064e3b;
+}
+
+.badgeUnavailable {
+  background: rgba(239, 68, 68, 0.18);
+  color: #7f1d1d;
+}
+
+.badgeIcon {
+  width: 18px;
+  height: 18px;
+}
+
+.details {
+  display: grid;
+  gap: 14px;
+}
+
+.head {
+  background: #fff;
+  border: 1px solid rgba(0,0,0,0.08);
+  border-radius: 16px;
+  padding: 16px;
+  box-shadow: 0 10px 22px rgba(0,0,0,0.06);
+}
+
+.title {
+  margin: 0 0 10px;
+  font-size: 28px;
+  font-weight: 1000;
+  letter-spacing: -0.03em;
+}
+
+.priceRow {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  justify-content: flex-start;
+}
+
+.price {
+  font-size: 22px;
+  font-weight: 1000;
+  color: #111827;
+}
+
+.per {
+  color: rgba(0,0,0,0.55);
+  font-weight: 800;
+}
+
+.descCard {
+  background: #fff;
+  border: 1px solid rgba(0,0,0,0.08);
+  border-radius: 16px;
+  padding: 16px;
+  box-shadow: 0 10px 22px rgba(0,0,0,0.06);
+}
+
+.descTitle {
+  margin: 0 0 10px;
+  font-size: 16px;
+  font-weight: 1000;
+}
+
+.desc {
+  margin: 0;
+  color: rgba(0,0,0,0.70);
+  font-weight: 650;
+  line-height: 1.6;
+}
+
+.purchaseCard {
+  background: #fff;
+  border: 1px solid rgba(0,0,0,0.08);
+  border-radius: 16px;
+  padding: 16px;
+  box-shadow: 0 10px 22px rgba(0,0,0,0.06);
+  display: grid;
+  gap: 14px;
+}
+
+.purchaseTop {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.label {
+  margin: 0 0 8px;
+  color: rgba(0,0,0,0.55);
+  font-weight: 900;
+  font-size: 13px;
+}
+
+.qtyRow {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  border: 1px solid rgba(0,0,0,0.12);
+  border-radius: 999px;
+  padding: 8px 10px;
+}
+
+.qtyBtn {
+  width: 34px;
+  height: 34px;
+  border-radius: 999px;
+  border: 0;
+  cursor: pointer;
+  font-weight: 1000;
+  background: rgba(0,0,0,0.06);
+  display: grid;
+  place-items: center;
+}
+
+.qtyBtn:hover {
+  background: rgba(0,0,0,0.10);
+}
+
+.qty {
+  min-width: 30px;
+  text-align: center;
+  font-weight: 1000;
+  font-size: 16px;
+}
+
+.totalBox {
+  text-align: right;
+}
+
+.total {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 1000;
+  color: #111827;
+}
+
+.addBtn,
+.addBtnDisabled {
+  width: 100%;
+  border-radius: 14px;
+  padding: 12px 14px;
+  border: 0;
+  font-weight: 1000;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.addBtn {
+  background: #111827;
+  color: #fff;
+}
+
+.addBtn:hover {
+  filter: brightness(1.05);
+}
+
+.addBtnDisabled {
+  background: rgba(0,0,0,0.12);
+  color: rgba(0,0,0,0.45);
+  cursor: not-allowed;
+}
+
+.cartIcon {
+  width: 18px;
+  height: 18px;
+}
+
+/* Not found */
+.notFound {
+  min-height: calc(100vh - 120px);
+  display: grid;
+  place-items: center;
+  padding: 24px;
+}
+
+.notFoundCard {
+  width: min(520px, 100%);
+  background: #fff;
+  border: 1px solid rgba(0,0,0,0.10);
+  border-radius: 16px;
+  padding: 18px;
+  box-shadow: 0 12px 28px rgba(0,0,0,0.08);
+  text-align: center;
+}
+
+.notFoundTitle {
+  margin: 0 0 8px;
+  font-size: 20px;
+  font-weight: 1000;
+}
+
+.notFoundText {
+  margin: 0 0 14px;
+  color: rgba(0,0,0,0.6);
+  font-weight: 700;
+}
+
+.backBtn {
+  border: 0;
+  padding: 10px 14px;
+  border-radius: 12px;
+  background: #111827;
+  color: #fff;
+  font-weight: 1000;
+  cursor: pointer;
+}
+
+/* Responsive */
+@media (max-width: 980px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+  .image {
+    height: 360px;
+  }
+  .sticky {
+    position: relative;
+    top: 0;
+  }
+}

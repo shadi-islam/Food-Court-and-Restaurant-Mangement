@@ -1,0 +1,71 @@
+import express from "express";
+import cors from "cors";
+import cookieParser from "cookie-parser";
+import http from "http";
+import { Server } from "socket.io";
+import { connectDB } from "./config/db.js";
+import authRoutes from "./routes/authRoutes.js";
+import categoryRoutes from "./routes/categoryRoutes.js";
+import menuRoutes from "./routes/menuRoutes.js";
+import cartRoutes from "./routes/cartRoutes.js";
+import orderRoutes from "./routes/orderRoutes.js";
+import feedbackRoutes from "./routes/feedbackRoutes.js";
+import contactRoutes from "./routes/contactRoutes.js";
+import analyticsRoutes from "./routes/analyticsRoutes.js";
+import notificationRoutes from "./routes/notificationRoutes.js";
+import brandingRoutes from "./routes/brandingRoutes.js";
+import dotenv from "dotenv";
+import connectCloudinary from "./config/cloudinary.js";
+
+// Load environment variables from .env file
+dotenv.config();
+
+const app = express();
+const server = http.createServer(app);
+// database connection
+connectDB();
+connectCloudinary();
+// middlewares
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(
+  cors({
+    origin: process.env.CORS_ORIGIN?.split(",") || "http://localhost:5173",
+    credentials: true,
+  })
+);
+app.use(cookieParser());
+// Socket.io (real-time order status)
+const io = new Server(server, {
+  cors: {
+    origin: process.env.CORS_ORIGIN?.split(",") || "http://localhost:5173",
+    credentials: true,
+  },
+});
+
+io.on("connection", (socket) => {
+  // customer subscribes to its order room
+  socket.on("order:subscribe", ({ orderId }) => {
+    if (orderId) socket.join(`order:${orderId}`);
+  });
+});
+
+app.set("io", io);
+const PORT = process.env.PORT || 5000;
+app.get("/", (req, res) => {
+  res.send("Hello from server");
+});
+app.use("/api/auth", authRoutes);
+app.use("/api/category", categoryRoutes);
+app.use("/api/menu", menuRoutes);
+app.use("/api/cart", cartRoutes);
+app.use("/api/order", orderRoutes);
+app.use("/api/feedback", feedbackRoutes);
+app.use("/api/analytics", analyticsRoutes);
+app.use("/api/contact", contactRoutes);
+app.use("/api/notification", notificationRoutes);
+app.use("/api/config/branding", brandingRoutes);
+
+server.listen(PORT, () => {
+  console.log(`server is running on port ${PORT}`);
+});

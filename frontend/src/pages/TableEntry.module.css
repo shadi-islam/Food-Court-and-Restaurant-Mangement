@@ -1,0 +1,176 @@
+.page {
+  min-height: calc(100vh - 120px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  position: relative;
+}
+
+.bgGlow {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(
+      600px 300px at 50% 20%,
+      rgba(245, 158, 11, 0.18),
+      transparent 60%
+    ),
+    radial-gradient(
+      600px 300px at 50% 80%,
+      rgba(99, 102, 241, 0.12),
+      transparent 60%
+    );
+}
+
+.card {
+  width: min(520px, 100%);
+  background: #fff;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 16px;
+  padding: 20px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  position: relative;
+}
+
+.head {
+  margin-bottom: 14px;
+}
+
+.title {
+  font-size: 26px;
+  font-weight: 900;
+  margin: 0 0 8px;
+  letter-spacing: -0.02em;
+}
+
+.subtitle {
+  margin: 0;
+  color: rgba(0, 0, 0, 0.65);
+  line-height: 1.45;
+}
+
+.formRow {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  margin-top: 14px;
+}
+
+.input {
+  flex: 1;
+  padding: 10px 12px;
+  border-radius: 12px;
+  border: 1px solid rgba(0, 0, 0, 0.14);
+  font-size: 16px;
+  outline: none;
+}
+
+.input:focus {
+  border-color: rgba(17, 24, 39, 0.35);
+  box-shadow: 0 0 0 4px rgba(17, 24, 39, 0.08);
+}
+
+.actions {
+  display: grid;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.primary {
+  padding: 12px 14px;
+  border: none;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: 800;
+  background: #111827;
+  color: #fff;
+  cursor: pointer;
+}
+
+.primary:disabled {
+  opacity: 0.9;
+  cursor: not-allowed;
+}
+
+.primaryRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.secondaryRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.secondary {
+  padding: 11px 14px;
+  border-radius: 12px;
+  font-size: 15px;
+  font-weight: 800;
+  background: rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  cursor: pointer;
+}
+
+.secondary:hover {
+  background: rgba(0, 0, 0, 0.08);
+}
+
+.secondary:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.clearBtn {
+  border: none;
+  background: transparent;
+  padding: 8px 6px;
+  font-weight: 700;
+  color: rgba(0, 0, 0, 0.6);
+  cursor: pointer;
+  text-decoration: underline;
+  justify-self: center;
+}
+
+.clearBtn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Progress ring */
+.ringWrap {
+  position: relative;
+  width: 44px;
+  height: 44px;
+  display: inline-grid;
+  place-items: center;
+}
+
+.ring {
+  transform: rotate(-90deg);
+}
+
+.ringTrack {
+  fill: none;
+  stroke: rgba(255, 255, 255, 0.18);
+  stroke-width: 5;
+}
+
+.ringFill {
+  fill: none;
+  stroke: #f59e0b;
+  stroke-width: 5;
+  stroke-linecap: round;
+  transition: stroke-dasharray 0.06s linear;
+}
+
+.ringText {
+  position: absolute;
+  font-size: 11px;
+  font-weight: 900;
+  color: rgba(255, 255, 255, 0.95);
+}

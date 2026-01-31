@@ -1,0 +1,189 @@
+@import url('https://fonts.googleapis.com/css2?family=Asap:wght@400;600;800&display=swap');
+
+.page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: black; /* Fire Red from your inspiration */
+  font-family: 'Asap', sans-serif;
+  overflow: hidden;
+  position: relative;
+}
+
+.loginContainer {
+  position: relative;
+  z-index: 10;
+  width: 100%;
+  max-width: 400px;
+}
+
+.loginForm {
+  background-color: white;
+  padding: 50px 40px;
+  border-radius: 20px;
+  box-shadow: 0 20px 40px rgba(2, 128, 144, 0.2);
+  position: relative;
+  overflow: hidden; /* Clips the waves inside the card */
+  transition: transform 300ms, box-shadow 300ms;
+}
+
+.loginForm:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 30px 60px rgba(2, 128, 144, 0.25);
+}
+
+/* The Animated Waves */
+.loginForm::before,
+.loginForm::after {
+  content: '';
+  position: absolute;
+  width: 600px;
+  height: 600px;
+  border-top-left-radius: 40%;
+  border-top-right-radius: 45%;
+  border-bottom-left-radius: 35%;
+  border-bottom-right-radius: 40%;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.loginForm::before {
+  left: 45%;
+  bottom: -110%;
+  background-color: rgba(69, 105, 144, 0.1); /* Queen Blue */
+  animation: waves 8s infinite linear;
+}
+
+.loginForm::after {
+  left: 40%;
+  bottom: -105%;
+  background-color: rgba(2, 128, 144, 0.15); /* Seaweed Green */
+  animation: waves 10s infinite linear;
+}
+
+@keyframes waves {
+  from { transform: rotate(0); }
+  to { transform: rotate(360deg); }
+}
+
+/* Header & Typography */
+.header {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.iconBox {
+  color: #f59e0b;
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: center;
+}
+
+.title {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 800;
+  color: #0f172a;
+}
+
+.subtitle {
+  margin: 5px 0 0;
+  font-size: 14px;
+  color: #64748b;
+  font-weight: 600;
+}
+
+/* Input Fields */
+.inputField {
+  position: relative;
+  z-index: 1;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  border-bottom: 2px solid #f1f5f9;
+  transition: border-color 0.3s;
+}
+
+.inputField:focus-within {
+  border-color: #f59e0b;
+}
+
+.icon {
+  color: #94a3b8;
+  margin-right: 12px;
+}
+
+.inputField input {
+  width: 100%;
+  padding: 14px 0;
+  border: none;
+  outline: none;
+  font-family: 'Asap', sans-serif;
+  font-size: 16px;
+  background: transparent;
+  color: #1e293b;
+}
+
+.eyeBtn {
+  background: none;
+  border: none;
+  color: #94a3b8;
+  cursor: pointer;
+  padding: 5px;
+}
+
+/* Submit Button */
+.submitBtn {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  padding: 14px;
+  margin-top: 10px;
+  background-color: #f59e0b;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  cursor: pointer;
+  transition: all 0.3s;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.submitBtn:hover {
+  background-color: #d13d4b;
+  box-shadow: 0 10px 20px rgba(244, 91, 105, 0.3);
+}
+
+.submitBtn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.loader {
+  width: 20px;
+  height: 20px;
+  border: 3px solid rgba(255,255,255,0.3);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: spin 1s infinite linear;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.copyright {
+  text-align: center;
+  margin-top: 20px;
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.8);
+  font-weight: 600;
+}
