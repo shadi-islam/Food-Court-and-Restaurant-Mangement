@@ -7,25 +7,30 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
+# Dependencies
 node_modules
+
+# Build output
 dist
 dist-ssr
-*.local
+build
 
-# Editor directories and files
+# Environment files
+.env
+.env.*
+
+# Editor & OS files
 .vscode/*
 !.vscode/extensions.json
 .idea
 .DS_Store
-*.suo
+.suo
 *.ntvs*
 *.njsproj
 *.sln
 *.sw?
 
-# Secrets
-.env
-.env.*
+# Secrets / configs
 backend/config/firebaseServiceAccount.json
 backend/config/firebaseAdmin.js
 backend/config/cloudinary.js
