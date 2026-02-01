@@ -45,6 +45,15 @@ export const placeOrder = async (req, res) => {
     cart.items = [];
     await cart.save();
 
+    // Notify admins of new order in real-time
+    const io = req.app.get("io");
+    if (io) {
+      const populatedOrder = await Order.findById(newOrder._id).populate("user").populate("items.menuItem");
+      io.emit("order:new", {
+        order: populatedOrder,
+      });
+    }
+
     res.status(201).json({
       success: true,
       message: "Order placed successfully",
@@ -90,9 +99,16 @@ export const updateOrderStatus = async (req, res) => {
     order.status = status;
     await order.save();
 
-    // Push realtime update to the customer
+    // Push realtime update to admin panels and customers
     const io = req.app.get("io");
     if (io) {
+      // Broadcast to all admin panels
+      io.emit("order:status", {
+        orderId: order._id,
+        status: order.status,
+      });
+
+      // Send to specific customer's order room
       io.to(`order:${order._id.toString()}`).emit("order:status", {
         orderId: order._id,
         status: order.status,
@@ -137,6 +153,13 @@ export const updatePaymentStatus = async (req, res) => {
 
     const io = req.app.get("io");
     if (io) {
+      // Broadcast to all admin panels
+      io.emit("order:paymentStatus", {
+        orderId: order._id,
+        paymentStatus: order.paymentStatus,
+      });
+
+      // Send to specific order room
       io.to(`order:${order._id.toString()}`).emit("order:paymentStatus", {
         orderId: order._id,
         paymentStatus: order.paymentStatus,
@@ -176,6 +199,14 @@ export const updateDiscount = async (req, res) => {
 
     const io = req.app.get("io");
     if (io) {
+      // Broadcast to all admin panels
+      io.emit("order:discount", {
+        orderId: order._id,
+        discount: order.discount,
+        totalAmount: order.totalAmount - discount,
+      });
+
+      // Send to specific order room
       io.to(`order:${order._id.toString()}`).emit("order:discount", {
         orderId: order._id,
         discount: order.discount,
@@ -216,6 +247,13 @@ export const updateEstimatedTime = async (req, res) => {
 
     const io = req.app.get("io");
     if (io) {
+      // Broadcast to all admin panels
+      io.emit("order:estimatedTime", {
+        orderId: order._id,
+        estimatedTime: order.estimatedTime,
+      });
+
+      // Send to specific order room
       io.to(`order:${order._id.toString()}`).emit("order:estimatedTime", {
         orderId: order._id,
         estimatedTime: order.estimatedTime,

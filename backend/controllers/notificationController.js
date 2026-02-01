@@ -8,8 +8,16 @@ export const registerFcmToken = async (req, res) => {
     const userId = req.user?.id;
     const { token, platform = "web" } = req.body;
 
-    if (!userId) return res.status(401).json({ success: false, message: "Not authorized" });
-    if (!token) return res.status(400).json({ success: false, message: "token is required" });
+    console.log("[NotificationController] Token registration request:", { userId, token: token?.substring(0, 20) + '...', platform });
+
+    if (!userId) {
+      console.warn("[NotificationController] ❌ Unauthorized: no user ID");
+      return res.status(401).json({ success: false, message: "Not authorized" });
+    }
+    if (!token) {
+      console.warn("[NotificationController] ❌ Missing token");
+      return res.status(400).json({ success: false, message: "token is required" });
+    }
 
     // Upsert by token (token is globally unique)
     const doc = await NotificationToken.findOneAndUpdate(
@@ -18,9 +26,10 @@ export const registerFcmToken = async (req, res) => {
       { upsert: true, new: true, setDefaultsOnInsert: true }
     );
 
+    console.log("[NotificationController] ✅ Token registered/updated:", doc._id);
     return res.status(200).json({ success: true, message: "Notification token registered", token: doc.token });
   } catch (error) {
-    console.log(error);
+    console.error("[NotificationController] ❌ Token registration error:", error);
     return res.json({ message: "Internal server error", success: false });
   }
 };
@@ -47,11 +56,21 @@ export const sendCustomNotificationToOrder = async (req, res) => {
     const { orderId } = req.params;
     const { title = "Restaurant Update", message } = req.body;
 
-    if (!message) return res.status(400).json({ success: false, message: "message is required" });
+    console.log("[NotificationController] Send notification request:", { orderId, title, message: message?.substring(0, 50) + '...' });
+
+    if (!message) {
+      console.warn("[NotificationController] ❌ No message provided");
+      return res.status(400).json({ success: false, message: "message is required" });
+    }
 
     const order = await Order.findById(orderId).populate("user");
-    if (!order) return res.status(404).json({ success: false, message: "Order not found" });
+    if (!order) {
+      console.warn("[NotificationController] ❌ Order not found:", orderId);
+      return res.status(404).json({ success: false, message: "Order not found" });
+    }
 
+    console.log("[NotificationController] Order found, user:", order.user?._id, order.user?.email);
+    
     const result = await sendNotificationToUser({
       userId: order.user?._id,
       title,
@@ -59,9 +78,10 @@ export const sendCustomNotificationToOrder = async (req, res) => {
       data: { orderId: order._id.toString(), status: order.status },
     });
 
+    console.log("[NotificationController] Notification service result:", result);
     return res.status(200).json({ success: true, message: "Notification sent", result });
   } catch (error) {
-    console.log(error);
+    console.error("[NotificationController] ❌ Send notification error:", error);
     return res.json({ message: "Internal server error", success: false });
   }
 };

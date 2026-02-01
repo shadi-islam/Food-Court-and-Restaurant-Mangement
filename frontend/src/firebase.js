@@ -20,34 +20,70 @@ export async function initMessaging() {
 }
 
 export async function requestAndGetFcmToken() {
-  const messaging = await initMessaging();
-  if (!messaging) return null;
+  console.log("[FCM] Starting token request...");
+  
+  try {
+    const supported = await isSupported();
+    console.log("[FCM] Browser support:", supported);
+    if (!supported) {
+      console.warn("[FCM] Push notifications not supported in this browser");
+      return null;
+    }
 
-  const permission = await Notification.requestPermission();
-  if (permission !== "granted") return null;
+    const messaging = await initMessaging();
+    console.log("[FCM] Messaging instance:", !!messaging);
+    if (!messaging) {
+      console.warn("[FCM] Failed to initialize messaging");
+      return null;
+    }
 
-  const vapidKey = import.meta.env.VITE_FIREBASE_VAPID_KEY;
-  if (!vapidKey) {
-    console.warn("[FCM] Missing VITE_FIREBASE_VAPID_KEY");
+    console.log("[FCM] Requesting notification permission...");
+    const permission = await Notification.requestPermission();
+    console.log("[FCM] Notification permission:", permission);
+    if (permission !== "granted") {
+      console.warn("[FCM] Notification permission denied by user");
+      return null;
+    }
+
+    const vapidKey = import.meta.env.VITE_FIREBASE_VAPID_KEY;
+    console.log("[FCM] VAPID key present:", !!vapidKey);
+    if (!vapidKey) {
+      console.error("[FCM] Missing VITE_FIREBASE_VAPID_KEY in .env");
+      return null;
+    }
+
+    console.log("[FCM] Waiting for service worker...");
+    const swReg = await navigator.serviceWorker.ready;
+    console.log("[FCM] Service worker ready:", !!swReg);
+
+    console.log("[FCM] Getting token from Firebase...");
+    const token = await getToken(messaging, {
+      vapidKey,
+      serviceWorkerRegistration: swReg,
+    });
+
+    console.log("[FCM] ✅ Token obtained successfully:", token);
+    return token;
+  } catch (error) {
+    console.error("[FCM] ❌ Token request error:", error);
     return null;
   }
-
-  const token = await getToken(messaging, {
-    vapidKey,
-    serviceWorkerRegistration: await navigator.serviceWorker.ready,
-  });
-
-  return token;
 }
 
 // Foreground message listener
 export async function listenToForegroundMessages(onNotify) {
+  console.log("[FCM] Setting up foreground message listener...");
   const messaging = await initMessaging();
-  if (!messaging) return () => {};
+  if (!messaging) {
+    console.warn("[FCM] Cannot set up listener: messaging not initialized");
+    return () => {};
+  }
 
   const unsubscribe = onMessage(messaging, (payload) => {
+    console.log("[FCM] 📬 Foreground message received:", payload);
     onNotify?.(payload);
   });
 
+  console.log("[FCM] ✅ Foreground listener active");
   return unsubscribe;
 }

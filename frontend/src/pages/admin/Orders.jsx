@@ -8,7 +8,7 @@ import {
 import styles from "./Orders.module.css";
 
 const Orders = () => {
-  const { admin, axios, loading, setLoading } = useContext(AppContext);
+  const { admin, axios, loading, setLoading, socket } = useContext(AppContext);
   const [orders, setOrders] = useState([]);
   const [expandedOrder, setExpandedOrder] = useState(null);
   const [notifyDraft, setNotifyDraft] = useState({});
@@ -122,6 +122,59 @@ const Orders = () => {
   useEffect(() => {
     if (admin) fetchOrders();
   }, [admin, fetchOrders]);
+
+  // Setup socket listeners for real-time order updates
+  useEffect(() => {
+    if (!socket) return;
+
+    // Listen for order status updates
+    const handleOrderStatus = (data) => {
+      setOrders(prev => prev.map(o => 
+        o._id === data.orderId ? { ...o, status: data.status } : o
+      ));
+    };
+
+    // Listen for payment status updates
+    const handlePaymentStatus = (data) => {
+      setOrders(prev => prev.map(o => 
+        o._id === data.orderId ? { ...o, paymentStatus: data.paymentStatus } : o
+      ));
+    };
+
+    // Listen for discount updates
+    const handleDiscount = (data) => {
+      setOrders(prev => prev.map(o => 
+        o._id === data.orderId ? { ...o, discount: data.discount } : o
+      ));
+    };
+
+    // Listen for estimated time updates
+    const handleEstimatedTime = (data) => {
+      setOrders(prev => prev.map(o => 
+        o._id === data.orderId ? { ...o, estimatedTime: data.estimatedTime } : o
+      ));
+    };
+
+    // Listen for new orders
+    const handleNewOrder = (data) => {
+      // Add new order to the list
+      setOrders(prev => [data.order, ...prev]);
+    };
+
+    socket.on("order:status", handleOrderStatus);
+    socket.on("order:paymentStatus", handlePaymentStatus);
+    socket.on("order:discount", handleDiscount);
+    socket.on("order:estimatedTime", handleEstimatedTime);
+    socket.on("order:new", handleNewOrder);
+
+    return () => {
+      socket.off("order:status", handleOrderStatus);
+      socket.off("order:paymentStatus", handlePaymentStatus);
+      socket.off("order:discount", handleDiscount);
+      socket.off("order:estimatedTime", handleEstimatedTime);
+      socket.off("order:new", handleNewOrder);
+    };
+  }, [socket]);
 
   return (
     <div className={styles.page}>

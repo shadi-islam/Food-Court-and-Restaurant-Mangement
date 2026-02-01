@@ -1,4 +1,4 @@
-import { createContext, useEffect, useMemo, useState } from "react";
+import { createContext, useEffect, useMemo, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 export const AppContext = createContext();
 
@@ -11,11 +11,13 @@ import { listenToForegroundMessages, requestAndGetFcmToken } from "../firebase";
 const AppContextProvider = ({ children }) => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
+  const [authLoading, setAuthLoading] = useState(true); // Track initial auth loading
   const [user, setUser] = useState(null);
   const [admin, setAdmin] = useState(null);
   const [categories, setCategories] = useState([]);
   const [menus, setMenus] = useState([]);
   const [branding, setBranding] = useState(null);
+  const logoutInProgressRef = useRef(false);
 
   // Locked table number for QR entry
   const [tableNumber, setTableNumberState] = useState(null);
@@ -134,28 +136,72 @@ const AppContextProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    isAuth();
-    isAdminAuth();
+    const checkAuth = async () => {
+      try {
+        await Promise.all([isAuth(), isAdminAuth()]);
+      } finally {
+        setAuthLoading(false);
+      }
+    };
+    
+    checkAuth();
     fetchCategories();
     fetchMenus();
     fetchBranding();
     fetchCartData();
   }, []);
 
+  // Setup axios interceptor to handle 401 responses for users (not admins)
+  useEffect(() => {
+    const interceptor = axios.interceptors.response.use(
+      (response) => response,
+      (error) => {
+        // Only auto-logout regular users, not admins
+        if (error.response?.status === 401) {
+          const url = error.config?.url || "";
+          // Only clear user auth for non-admin endpoints
+          if (!url.includes("/admin") && user) {
+            if (!logoutInProgressRef.current) {
+              logoutInProgressRef.current = true;
+              setUser(null);
+              setTimeout(() => {
+                logoutInProgressRef.current = false;
+              }, 1000);
+            }
+          }
+        }
+        return Promise.reject(error);
+      }
+    );
+
+    return () => {
+      axios.interceptors.response.eject(interceptor);
+    };
+  }, [user]);
+
   // FCM Push Notifications (web) - register token after user is authenticated
   useEffect(() => {
     const setup = async () => {
-      if (!user) return;
+      if (!user) {
+        console.log("[AppContext] Skipping FCM setup: no user");
+        return;
+      }
       try {
+        console.log("[AppContext] Setting up FCM for user:", user._id, user.email);
         const token = await requestAndGetFcmToken();
-        if (!token) return;
-        await axios.post("/api/notification/register-token", {
+        if (!token) {
+          console.warn("[AppContext] FCM setup aborted: no token returned");
+          return;
+        }
+        
+        console.log("[AppContext] Registering token on backend...");
+        const response = await axios.post("/api/notification/register-token", {
           token,
           platform: "web",
         });
+        console.log("[AppContext] ✅ Token registered successfully:", response.data);
       } catch (err) {
-        // Silent: user may deny permission
-        console.warn("FCM setup failed", err);
+        console.error("[AppContext] ❌ FCM setup failed:", err);
       }
     };
     setup();
@@ -207,6 +253,7 @@ const AppContextProvider = ({ children }) => {
     navigate,
     loading,
     setLoading,
+    authLoading,
     user,
     setUser,
     axios,

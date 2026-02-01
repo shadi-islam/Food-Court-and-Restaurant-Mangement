@@ -5,7 +5,7 @@ import { Wallet, CreditCard } from "lucide-react";
 import styles from "./Checkout.module.css";
 
 const Checkout = () => {
-  const { totalPrice, axios, navigate, tableNumber, user } = useContext(AppContext);
+  const { totalPrice, axios, navigate, tableNumber, user, fetchCartData } = useContext(AppContext);
   const [paymentMethod, setPaymentMethod] = useState("Cash");
   const [loading, setLoading] = useState(false);
 
@@ -29,6 +29,8 @@ const Checkout = () => {
 
       if (data.success) {
         toast.success(data.message);
+        // Refresh cart data to reflect the cleared cart
+        await fetchCartData();
         navigate("/my-orders");
       } else toast.error(data.message);
     } catch (error) {

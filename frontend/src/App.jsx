@@ -27,7 +27,19 @@ import Feedback from "./pages/admin/Feedback";
 import Branding from "./pages/admin/Branding";
 const App = () => {
   const adminPath = useLocation().pathname.includes("admin");
-  const { admin } = useContext(AppContext);
+  const { admin, authLoading } = useContext(AppContext);
+
+  // Show loading screen while checking auth on page load
+  if (authLoading && adminPath) {
+    return (
+      <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100vh" }}>
+        <div style={{ textAlign: "center" }}>
+          <div style={{ fontSize: "24px", marginBottom: "20px" }}>Loading...</div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div>
       <Toaster />
