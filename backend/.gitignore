@@ -17,7 +17,7 @@ build
 
 # Environment files
 .env
-.env.*
+
 
 # Editor & OS files
 .vscode/*
@@ -31,4 +31,4 @@ build
 *.sw?
 
 # Secrets / configs
-backend/config/firebaseServiceAccount.json
+firebaseServiceAccount.json
