@@ -30,7 +30,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(
   cors({
-    origin: process.env.CORS_ORIGIN?.split(",") || "https://food-court-and-restaurant-mangement-1.onrender.com/",
+    origin:"https://food-court-and-restaurant-mangement-1.onrender.com",
     credentials: true,
   })
 );
@@ -38,7 +38,7 @@ app.use(cookieParser());
 // Socket.io (real-time order status)
 const io = new Server(server, {
   cors: {
-    origin: process.env.CORS_ORIGIN?.split(",") || "https://food-court-and-restaurant-mangement-1.onrender.com/",
+    origin:"https://food-court-and-restaurant-mangement-1.onrender.com",
     credentials: true,
   },
 });
