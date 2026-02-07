@@ -239,7 +239,7 @@ const AppContextProvider = ({ children }) => {
 
   const socket = useMemo(() => {
     // connect once; cookie auth is used by the backend
-    const url = import.meta.env.VITE_SOCKET_URL || import.meta.env.VITE_BASE_URL ;
+    const url = "https://food-court-and-restaurant-backend.onrender.com" ;
     const s = io(url, { withCredentials: true, transports: ["websocket"] });
     return s;
   }, []);
