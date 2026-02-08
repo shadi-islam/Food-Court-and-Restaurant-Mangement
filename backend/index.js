@@ -55,10 +55,17 @@ app.use(cors(corsOptions));
 console.log("[CORS] Configured for cross-domain cookie sharing");
 app.use(cookieParser());
 
-// Debug middleware: log all incoming requests with cookies
+// Debug middleware: log important API requests (skip health checks)
 app.use((req, res, next) => {
-  const cookie = req.cookies.token ? "✓ Present" : "✗ Missing";
-  console.log(`[REQUEST] ${req.method} ${req.path} - Cookie: ${cookie}, Origin: ${req.get('origin')}`);
+  // Skip logging for health checks and static files
+  const isHealthCheck = (req.method === "HEAD" || req.method === "GET") && req.path === "/";
+  const isStaticFile = /\.(js|css|png|jpg|jpeg|gif|svg|ico|woff|woff2)$/i.test(req.path);
+  
+  if (!isHealthCheck && !isStaticFile && req.path.startsWith("/api")) {
+    const cookie = req.cookies.token ? "✓ Present" : "✗ Missing";
+    const origin = req.get('origin') || "internal";
+    console.log(`[REQUEST] ${req.method} ${req.path} - Cookie: ${cookie}, Origin: ${origin}`);
+  }
   next();
 });
 
