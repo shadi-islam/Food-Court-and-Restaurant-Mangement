@@ -125,10 +125,16 @@ const Orders = () => {
 
   // Setup socket listeners for real-time order updates
   useEffect(() => {
-    if (!socket) return;
+    if (!socket) {
+      console.warn("[SOCKET] Socket not available in Orders component");
+      return;
+    }
+
+    console.log("[SOCKET] Setting up order event listeners on Orders page");
 
     // Listen for order status updates
     const handleOrderStatus = (data) => {
+      console.log("[SOCKET] Received order:status event", data);
       setOrders(prev => prev.map(o => 
         o._id === data.orderId ? { ...o, status: data.status } : o
       ));
@@ -136,6 +142,7 @@ const Orders = () => {
 
     // Listen for payment status updates
     const handlePaymentStatus = (data) => {
+      console.log("[SOCKET] Received order:paymentStatus event", data);
       setOrders(prev => prev.map(o => 
         o._id === data.orderId ? { ...o, paymentStatus: data.paymentStatus } : o
       ));
@@ -143,6 +150,7 @@ const Orders = () => {
 
     // Listen for discount updates
     const handleDiscount = (data) => {
+      console.log("[SOCKET] Received order:discount event", data);
       setOrders(prev => prev.map(o => 
         o._id === data.orderId ? { ...o, discount: data.discount } : o
       ));
@@ -150,14 +158,22 @@ const Orders = () => {
 
     // Listen for estimated time updates
     const handleEstimatedTime = (data) => {
+      console.log("[SOCKET] Received order:estimatedTime event", data);
       setOrders(prev => prev.map(o => 
         o._id === data.orderId ? { ...o, estimatedTime: data.estimatedTime } : o
       ));
     };
 
-    // Listen for new orders
+    // Listen for new orders - CRITICAL for showing customer orders in real-time
     const handleNewOrder = (data) => {
-      // Add new order to the list
+      console.log("[SOCKET] 🎉 RECEIVED NEW ORDER from customer!", {
+        orderId: data.order?._id,
+        customerName: data.order?.user?.name || "Guest",
+        tableNumber: data.order?.tableNumber,
+        itemCount: data.order?.items?.length,
+        totalAmount: data.order?.totalAmount,
+      });
+      // Add new order to the top of the list
       setOrders(prev => [data.order, ...prev]);
     };
 
@@ -167,7 +183,10 @@ const Orders = () => {
     socket.on("order:estimatedTime", handleEstimatedTime);
     socket.on("order:new", handleNewOrder);
 
+    console.log("[SOCKET] Event listeners attached: order:new, order:status, order:paymentStatus, order:discount, order:estimatedTime");
+
     return () => {
+      console.log("[SOCKET] Cleaning up event listeners from Orders page");
       socket.off("order:status", handleOrderStatus);
       socket.off("order:paymentStatus", handlePaymentStatus);
       socket.off("order:discount", handleDiscount);

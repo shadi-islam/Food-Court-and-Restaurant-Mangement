@@ -240,7 +240,21 @@ const AppContextProvider = ({ children }) => {
   const socket = useMemo(() => {
     // connect once; cookie auth is used by the backend
     const url = import.meta.env.VITE_SOCKET_URL || import.meta.env.VITE_BASE_URL || "https://food-court-and-restaurant-backend.onrender.com";
+    console.log("[SOCKET] Initializing Socket.io connection to:", url);
     const s = io(url, { withCredentials: true, transports: ["websocket"] });
+    
+    s.on("connect", () => {
+      console.log("[SOCKET] ✅ Connected successfully - Socket ID:", s.id);
+    });
+    
+    s.on("disconnect", (reason) => {
+      console.log("[SOCKET] ❌ Disconnected -", reason);
+    });
+    
+    s.on("error", (error) => {
+      console.error("[SOCKET] ⚠️ Error:", error);
+    });
+    
     return s;
   }, []);
 

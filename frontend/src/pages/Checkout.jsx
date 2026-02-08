@@ -21,6 +21,13 @@ const Checkout = () => {
         return;
       }
 
+      console.log("[ORDER CHECKOUT] Placing order with:", {
+        tableNumber,
+        totalPrice,
+        paymentMethod: "Cash",
+        customerName: user?.name,
+      });
+
       const { data } = await axios.post("/api/order/place", {
         tableNumber,
         paymentMethod: "Cash",
@@ -28,13 +35,17 @@ const Checkout = () => {
       });
 
       if (data.success) {
+        console.log("[ORDER CHECKOUT] ✅ Order placed successfully:", data.order?._id);
         toast.success(data.message);
         // Refresh cart data to reflect the cleared cart
         await fetchCartData();
         navigate("/my-orders");
-      } else toast.error(data.message);
+      } else {
+        console.log("[ORDER CHECKOUT] ❌ Order placement failed:", data.message);
+        toast.error(data.message);
+      }
     } catch (error) {
-      console.log(error);
+      console.error("[ORDER CHECKOUT] Error placing order:", error);
       toast.error("Something went wrong!");
     } finally {
       setLoading(false);

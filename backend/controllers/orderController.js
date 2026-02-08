@@ -48,10 +48,25 @@ export const placeOrder = async (req, res) => {
     // Notify admins of new order in real-time
     const io = req.app.get("io");
     if (io) {
-      const populatedOrder = await Order.findById(newOrder._id).populate("user").populate("items.menuItem");
+      const populatedOrder = await Order.findById(newOrder._id)
+        .populate("user")
+        .populate("items.menuItem");
+      
+      console.log("[ORDER PLACED] New order created:", {
+        orderId: newOrder._id,
+        tableNumber: newOrder.tableNumber,
+        itemCount: newOrder.items.length,
+        totalAmount: newOrder.totalAmount,
+        customerName: populatedOrder?.user?.name || "Guest",
+      });
+      
+      console.log("[SOCKET EMIT] Broadcasting order:new event to all connected admins");
       io.emit("order:new", {
         order: populatedOrder,
       });
+      console.log("[SOCKET SUCCESS] order:new event emitted");
+    } else {
+      console.warn("[SOCKET WARNING] io instance not found - real-time update failed");
     }
 
     res.status(201).json({
