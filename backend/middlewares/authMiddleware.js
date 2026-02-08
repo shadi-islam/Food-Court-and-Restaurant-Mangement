@@ -16,6 +16,7 @@ export const protect=(req,res,next)=>{
 export const adminOnly=(req,res,next)=>{
    const token=req.cookies.token;
     if(!token){
+      console.log("[adminOnly] No token found in cookies");
       return res.status(401).json({message:"Not Authorized",success:false})
    }
    try {
@@ -27,7 +28,19 @@ export const adminOnly=(req,res,next)=>{
       const isAdminEmail =
         !!req.user?.email && req.user.email === process.env.ADMIN_EMAIL;
 
+      // Debug logging (only in non-production)
+      if (process.env.NODE_ENV !== "production") {
+        console.log("[adminOnly] User:", {
+          email: req.user?.email,
+          adminLevel: req.user?.adminLevel,
+          isAdminRole,
+          isAdminEmail,
+          configAdminEmail: process.env.ADMIN_EMAIL
+        });
+      }
+
       if (!isAdminRole && !isAdminEmail) {
+        console.log("[adminOnly] Access denied - insufficient permissions");
         return res
           .status(403)
           .json({ message: "Admin access required", success: false });
@@ -35,7 +48,8 @@ export const adminOnly=(req,res,next)=>{
 
       return next();
    } catch (error) {
-           res.status(401).json({ message: "Invalid token" });
+      console.log("[adminOnly] Token verification error:", error.message);
+      res.status(401).json({ message: "Invalid token" });
    }
 }
 

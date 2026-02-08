@@ -54,6 +54,7 @@ export const updateBranding = async (req, res) => {
         logoUrl: logoUrl || "",
         updatedBy: req.user?.email || "system",
       });
+      console.log("[updateBranding] New branding document created by:", req.user?.email);
     } else {
       // Update fields if provided
       if (siteName !== undefined) branding.siteName = siteName;
@@ -65,6 +66,7 @@ export const updateBranding = async (req, res) => {
       branding.updatedBy = req.user?.email || "system";
 
       await branding.save();
+      console.log("[updateBranding] Branding updated by:", req.user?.email, "- Logo URL:", logoUrl || "unchanged");
     }
 
     res.status(200).json({
@@ -73,7 +75,7 @@ export const updateBranding = async (req, res) => {
       branding,
     });
   } catch (error) {
-    console.error("Error in updateBranding:", error);
+    console.error("[updateBranding] Error:", error.message);
     return res.status(500).json({
       message: "Internal server error",
       success: false,
