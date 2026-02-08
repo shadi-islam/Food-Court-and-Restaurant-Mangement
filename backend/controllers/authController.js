@@ -6,17 +6,22 @@ const generateToken = (res, payload) => {
   const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: "1d" });
   const cookieOptions = {
     httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
-    sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+    secure: true, // MUST be true when sameSite: "none"
+    sameSite: "none", // Allow cross-site cookies
     maxAge: 24 * 60 * 60 * 1000,
+    path: "/", // Critical: make cookie available to all paths
   };
   
-  // For Render deployment: share cookie across subdomains
-  if (process.env.NODE_ENV === "production") {
-    cookieOptions.domain = ".onrender.com";
-  }
+  console.log(`[generateToken] Setting cookie with options:`, {
+    secure: cookieOptions.secure,
+    sameSite: cookieOptions.sameSite,
+    httpOnly: cookieOptions.httpOnly,
+    path: cookieOptions.path,
+    env: process.env.NODE_ENV,
+  });
   
   res.cookie("token", token, cookieOptions);
+  console.log(`[generateToken] Cookie set. Header should contain Set-Cookie`);
   return token;
 };
 
@@ -45,6 +50,7 @@ export const registerUser = async (req, res) => {
 export const loginUser = async (req, res) => {
   try {
     const { email, password } = req.body;
+    console.log(`[loginUser] Login attempt for email: ${email}`);
     if (!email || !password) {
       return res.json({
         message: "Please fill all the fields",
@@ -54,15 +60,18 @@ export const loginUser = async (req, res) => {
 
     const user = await User.findOne({ email });
     if (!user) {
+      console.log(`[loginUser] User not found: ${email}`);
       return res.json({ message: "User does not exist", success: false });
     }
 
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
+      console.log(`[loginUser] Invalid password for user: ${email}`);
       return res.json({ message: "Invalid credentials", success: false });
     }
 
     generateToken(res, { id: user._id, role: user.isAdmin ? "admin" : "user" });
+    console.log(`[loginUser] User logged in successfully: ${email}`);
     res.json({
       message: "User logged in successfully",
       success: true,
@@ -100,14 +109,14 @@ export const guestLogin = async (req, res) => {
     );
     const cookieOptions = {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+      secure: true,
+      sameSite: "none",
+      path: "/",
       maxAge: 12 * 60 * 60 * 1000,
     };
-    if (process.env.NODE_ENV === "production") {
-      cookieOptions.domain = ".onrender.com";
-    }
+    
     res.cookie("token", token, cookieOptions);
+    console.log(`[guestLogin] Guest session created and cookie set`);
 
     return res.json({
       success: true,
@@ -123,6 +132,7 @@ export const guestLogin = async (req, res) => {
 export const adminLogin = async (req, res) => {
   try {
     const { email, password } = req.body;
+    console.log(`[adminLogin] Admin login attempt for email: ${email}`);
     if (!email || !password) {
       return res.json({
         message: "Please fill all the fields",
@@ -144,10 +154,13 @@ export const adminLogin = async (req, res) => {
     if (email === superAdminEmail && password === superAdminPassword) {
       adminLevel = "super_admin";
       authEmail = superAdminEmail;
+      console.log(`[adminLogin] Super admin authenticated: ${email}`);
     } else if (email === adminEmail && password === adminPassword) {
       adminLevel = "admin";
       authEmail = adminEmail;
+      console.log(`[adminLogin] Admin authenticated: ${email}`);
     } else {
+      console.log(`[adminLogin] Invalid credentials for: ${email}`);
       return res.json({ message: "Invalid credentials", success: false });
     }
 
@@ -160,14 +173,21 @@ export const adminLogin = async (req, res) => {
 
     const cookieOptions = {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+      secure: true, // MUST be true when sameSite: "none"
+      sameSite: "none", // Allow cross-site cookies
       maxAge: 24 * 60 * 60 * 1000,
+      path: "/", // Critical: make cookie available to all paths
     };
-    if (process.env.NODE_ENV === "production") {
-      cookieOptions.domain = ".onrender.com";
-    }
+    
+    console.log(`[adminLogin] Setting cookie with options:`, {
+      secure: cookieOptions.secure,
+      sameSite: cookieOptions.sameSite,
+      httpOnly: cookieOptions.httpOnly,
+      path: cookieOptions.path,
+    });
+    
     res.cookie("token", token, cookieOptions);
+    console.log(`[adminLogin] Cookie set successfully for: ${authEmail}`);
 
     return res.json({
       success: true,
@@ -199,12 +219,12 @@ export const logoutUser = async (req, res) => {
   try {
     const clearCookieOptions = {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+      secure: true,
+      sameSite: "none",
+      path: "/",
     };
-    if (process.env.NODE_ENV === "production") {
-      clearCookieOptions.domain = ".onrender.com";
-    }
+    
+    console.log(`[logoutUser] Clearing token cookie`);
     res.clearCookie("token", clearCookieOptions);
     return res.json({ message: "User logged out successfully", success: true });
   } catch (error) {
