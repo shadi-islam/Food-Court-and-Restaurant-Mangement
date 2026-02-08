@@ -1,14 +1,18 @@
 import jwt from "jsonwebtoken";
 export const protect=(req,res,next)=>{
    const token=req.cookies.token;
+   console.log("[protect] Checking auth - Token present:", !!token, "Request from:", req.get('origin'));
    if(!token){
+      console.log("[protect] No token - returning 401");
       return res.status(401).json({message:"Not Authorized",success:false})
    }
    try {
       const decoded=jwt.verify(token,process.env.JWT_SECRET);
       req.user=decoded;
+      console.log("[protect] Token verified successfully for user:", decoded.id || decoded.email);
       next();
    } catch (error) {
+      console.log("[protect] Token verification failed:", error.message);
       res.status(401).json({ message: "Invalid token" });
    }
 }

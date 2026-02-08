@@ -4,16 +4,19 @@ import bcrypt from "bcryptjs";
 // Generate JWT
 const generateToken = (res, payload) => {
   const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: "1d" });
-  res.cookie("token", token, {
+  const cookieOptions = {
     httpOnly: true,
-    // Browsers require `Secure` when `SameSite=None`.
-    // In local dev (http://localhost) that combination will cause the cookie
-    // to be rejected, which looks like "Not Authorized" on protected routes.
-    // So we use Lax for development and None+Secure for production.
     secure: process.env.NODE_ENV === "production",
     sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
     maxAge: 24 * 60 * 60 * 1000,
-  });
+  };
+  
+  // For Render deployment: share cookie across subdomains
+  if (process.env.NODE_ENV === "production") {
+    cookieOptions.domain = ".onrender.com";
+  }
+  
+  res.cookie("token", token, cookieOptions);
   return token;
 };
 
@@ -95,12 +98,16 @@ export const guestLogin = async (req, res) => {
       process.env.JWT_SECRET,
       { expiresIn: "12h" }
     );
-    res.cookie("token", token, {
+    const cookieOptions = {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
       maxAge: 12 * 60 * 60 * 1000,
-    });
+    };
+    if (process.env.NODE_ENV === "production") {
+      cookieOptions.domain = ".onrender.com";
+    }
+    res.cookie("token", token, cookieOptions);
 
     return res.json({
       success: true,
@@ -151,12 +158,16 @@ export const adminLogin = async (req, res) => {
       { expiresIn: "1d" }
     );
 
-    res.cookie("token", token, {
+    const cookieOptions = {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
       maxAge: 24 * 60 * 60 * 1000,
-    });
+    };
+    if (process.env.NODE_ENV === "production") {
+      cookieOptions.domain = ".onrender.com";
+    }
+    res.cookie("token", token, cookieOptions);
 
     return res.json({
       success: true,
@@ -186,11 +197,15 @@ export const adminIsAuth = async (req, res) => {
 
 export const logoutUser = async (req, res) => {
   try {
-    res.clearCookie("token", {
+    const clearCookieOptions = {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
-    });
+    };
+    if (process.env.NODE_ENV === "production") {
+      clearCookieOptions.domain = ".onrender.com";
+    }
+    res.clearCookie("token", clearCookieOptions);
     return res.json({ message: "User logged out successfully", success: true });
   } catch (error) {
     console.log(error.message);
