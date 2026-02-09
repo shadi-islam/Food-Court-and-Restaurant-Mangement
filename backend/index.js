@@ -114,9 +114,21 @@ app.use("/api/notification", notificationRoutes);
 app.use("/api/config/branding", brandingRoutes);
 
 // SPA Fallback: serve index.html for all non-API routes (handles React Router)
-app.get("*", (req, res) => {
+// Using regex to avoid /api routes
+app.use((req, res, next) => {
+  // If path starts with /api, skip this middleware
+  if (req.path.startsWith("/api")) {
+    return next();
+  }
+  
+  // If the file exists in dist, serve it (already handled by express.static above)
+  if (req.path.includes(".")) {
+    return next();
+  }
+  
+  // Otherwise, serve index.html for all other routes (SPA routing)
   const indexPath = path.join(frontendDistPath, "index.html");
-  console.log("[FRONTEND SPA] Fallback route to:", indexPath, "for path:", req.path);
+  console.log("[FRONTEND SPA] Serving index.html for path:", req.path);
   res.sendFile(indexPath, (err) => {
     if (err) {
       console.error("[FRONTEND SPA] Error serving index.html:", err.message);
