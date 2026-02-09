@@ -44,6 +44,7 @@ const corsOptions = {
       "http://localhost",
       "https://food-court-and-restaurant-mangement-1.onrender.com",
       "https://food-court-and-restaurant-mangement-1-22d1.onrender.com",
+      "https://yessrestaurant.akashtv.top/",
     ];
     
     // Allow requests with no origin (like mobile apps, curl requests, same-domain requests)
