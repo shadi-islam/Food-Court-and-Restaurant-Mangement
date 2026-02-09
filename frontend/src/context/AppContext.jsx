@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 export const AppContext = createContext();
 
 import axios from "axios";
-axios.defaults.baseURL = import.meta.env.VITE_BASE_URL || "https://food-court-and-restaurant-backend.onrender.com";
+axios.defaults.baseURL = import.meta.env.VITE_BASE_URL || "https://food-court-and-restaurant-mangement-z472.onrender.com";
 axios.defaults.withCredentials = true;
 import { toast } from "react-hot-toast";
 import { io } from "socket.io-client";
@@ -126,12 +126,21 @@ const AppContextProvider = ({ children }) => {
 
   const fetchBranding = async () => {
     try {
+      console.log("[BRANDING] Fetching branding data...");
       const { data } = await axios.get("/api/config/branding");
       if (data.success) {
+        console.log("[BRANDING] ✅ Branding fetched successfully:", {
+          siteName: data.branding?.siteName,
+          logoUrl: data.branding?.logoUrl,
+          ownerName: data.branding?.ownerName,
+          footerText: data.branding?.footerText,
+        });
         setBranding(data.branding);
+      } else {
+        console.log("[BRANDING] ❌ Branding fetch failed:", data.message);
       }
     } catch (error) {
-      console.log("Error fetching branding:", error);
+      console.error("[BRANDING] Error fetching branding:", error.message);
     }
   };
 
@@ -239,7 +248,7 @@ const AppContextProvider = ({ children }) => {
 
   const socket = useMemo(() => {
     // connect once; cookie auth is used by the backend
-    const url = import.meta.env.VITE_SOCKET_URL || import.meta.env.VITE_BASE_URL || "https://food-court-and-restaurant-backend.onrender.com";
+    const url = import.meta.env.VITE_SOCKET_URL || import.meta.env.VITE_BASE_URL || "https://food-court-and-restaurant-mangement-z472.onrender.com";
     console.log("[SOCKET] Initializing Socket.io connection to:", url);
     const s = io(url, { withCredentials: true, transports: ["websocket"] });
     

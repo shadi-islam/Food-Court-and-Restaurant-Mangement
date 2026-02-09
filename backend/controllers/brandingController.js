@@ -14,11 +14,18 @@ export const getBranding = async (req, res) => {
         logoUrl: "",
         updatedBy: "system",
       });
+      console.log("[BRANDING] Created default branding document");
     }
+
+    console.log("[BRANDING GET] Returning branding:", {
+      siteName: branding.siteName,
+      logoUrl: branding.logoUrl || "(empty)",
+      ownerName: branding.ownerName,
+    });
 
     res.status(200).json({ success: true, branding });
   } catch (error) {
-    console.log(error);
+    console.error("[BRANDING GET] Error:", error.message);
     return res.json({ message: "Internal server error", success: false });
   }
 };

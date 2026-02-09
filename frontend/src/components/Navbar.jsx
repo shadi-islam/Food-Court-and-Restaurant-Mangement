@@ -25,6 +25,15 @@ const Navbar = () => {
   const profileRef = useRef(null);
   const closeTimer = useRef(null);
 
+  // Log branding status for debugging
+  useEffect(() => {
+    if (branding?.logoUrl) {
+      console.log("[NAVBAR] Logo URL is available:", branding.logoUrl);
+    } else {
+      console.log("[NAVBAR] No logo URL set, using default");
+    }
+  }, [branding?.logoUrl]);
+
   const links = useMemo(
     () => [
       { to: "/", label: "Home" },
@@ -106,9 +115,13 @@ const Navbar = () => {
         >
           <span className={styles.brandIcon} aria-hidden="true">
             <img
-              src="./src/assets/logo2.png"
+              src={branding?.logoUrl || "/src/assets/log2.png"}
               alt={`${branding?.siteName || "Restaurant"} Logo`}
               className={styles.brandLogo}
+              onError={(e) => {
+                // Fallback to default logo if URL fails to load
+                e.target.src = "/src/assets/log2.png";
+              }}
             />
           </span>
           <span className={styles.brandName}>{branding?.siteName || "Restaurant"}</span>

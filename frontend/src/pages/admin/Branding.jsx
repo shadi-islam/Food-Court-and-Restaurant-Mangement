@@ -38,14 +38,27 @@ const Branding = () => {
     e.preventDefault();
     try {
       setLoading(true);
+      console.log("[BRANDING UPDATE] Sending branding data:", {
+        siteName: formData.siteName,
+        ownerName: formData.ownerName,
+        logoUrl: formData.logoUrl,
+        adminPortalName: formData.adminPortalName,
+        footerText: formData.footerText,
+      });
+      
       const { data } = await axios.put("/api/config/branding", formData);
       if (data.success) {
+        console.log("[BRANDING UPDATE] ✅ Update successful:", {
+          logoUrl: data.branding?.logoUrl,
+        });
         toast.success(data.message || "Branding updated successfully!");
         await fetchBranding();
       } else {
+        console.log("[BRANDING UPDATE] ❌ Update failed:", data.message);
         toast.error(data.message || "Failed to update branding");
       }
     } catch (error) {
+      console.error("[BRANDING UPDATE] Error:", error);
       console.error("Full error object:", error);
       console.error("Error response:", error.response);
       console.error("Error message:", error.message);

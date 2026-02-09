@@ -35,7 +35,7 @@ const corsOptions = {
     const allowedOrigins = [
       "http://localhost:5173",
       "http://localhost:3000",
-      "https://food-court-and-restaurant-mangement-1.onrender.com",
+      "https://food-court-and-restaurant-mangement-1-22d1.onrender.com",
     ];
     
     // Allow requests with no origin (like mobile apps, curl requests)
