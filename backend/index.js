@@ -42,7 +42,6 @@ const corsOptions = {
       "http://localhost:5173",
       "http://localhost:3000",
       "http://localhost",
-      "https://food-court-and-restaurant-mangement-1.onrender.com",
       "https://food-court-and-restaurant-mangement-1-22d1.onrender.com",
       "https://yessrestaurant.akashtv.top/",
     ];
