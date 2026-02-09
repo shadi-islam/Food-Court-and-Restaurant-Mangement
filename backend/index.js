@@ -2,6 +2,8 @@ import express from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import http from "http";
+import path from "path";
+import { fileURLToPath } from "url";
 import { Server } from "socket.io";
 import { connectDB } from "./config/db.js";
 import authRoutes from "./routes/authRoutes.js";
@@ -16,6 +18,10 @@ import notificationRoutes from "./routes/notificationRoutes.js";
 import brandingRoutes from "./routes/brandingRoutes.js";
 import dotenv from "dotenv";
 import connectCloudinary from "./config/cloudinary.js";
+
+// Get __dirname for ES modules
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 // Load environment variables from .env file
 dotenv.config();
@@ -35,10 +41,12 @@ const corsOptions = {
     const allowedOrigins = [
       "http://localhost:5173",
       "http://localhost:3000",
+      "http://localhost",
+      "https://food-court-and-restaurant-mangement-1.onrender.com",
       "https://food-court-and-restaurant-mangement-1-22d1.onrender.com",
     ];
     
-    // Allow requests with no origin (like mobile apps, curl requests)
+    // Allow requests with no origin (like mobile apps, curl requests, same-domain requests)
     if (!origin || allowedOrigins.includes(origin)) {
       callback(null, true);
     } else {
@@ -83,9 +91,17 @@ io.on("connection", (socket) => {
 
 app.set("io", io);
 const PORT = process.env.PORT || 5000;
+
 app.get("/", (req, res) => {
   res.send("Hello from server");
 });
+
+// Serve frontend static files (CSS, JS, images, etc.)
+const frontendDistPath = path.join(__dirname, "../frontend/dist");
+app.use(express.static(frontendDistPath));
+console.log("[FRONTEND] Serving static files from:", frontendDistPath);
+
+// API routes
 app.use("/api/auth", authRoutes);
 app.use("/api/category", categoryRoutes);
 app.use("/api/menu", menuRoutes);
@@ -96,6 +112,18 @@ app.use("/api/analytics", analyticsRoutes);
 app.use("/api/contact", contactRoutes);
 app.use("/api/notification", notificationRoutes);
 app.use("/api/config/branding", brandingRoutes);
+
+// SPA Fallback: serve index.html for all non-API routes (handles React Router)
+app.get("*", (req, res) => {
+  const indexPath = path.join(frontendDistPath, "index.html");
+  console.log("[FRONTEND SPA] Fallback route to:", indexPath, "for path:", req.path);
+  res.sendFile(indexPath, (err) => {
+    if (err) {
+      console.error("[FRONTEND SPA] Error serving index.html:", err.message);
+      res.status(500).send("Error loading frontend");
+    }
+  });
+});
 
 server.listen(PORT, () => {
   console.log(`server is running on port ${PORT}`);
