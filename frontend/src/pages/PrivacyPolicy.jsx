@@ -94,9 +94,9 @@ export default function PrivacyPolicy() {
             If you have questions about this Privacy Policy or our data practices, please contact us:
           </p>
           <ul>
-            <li>Email: privacy@restaurant.com</li>
-            <li>Phone: +1-800-RESTAURANT</li>
-            <li>Address: 123 Restaurant St, Your City, Country</li>
+            <li>Email: privacy@yessbd.com</li>
+            <li>Phone: +8801712345678</li>
+            <li>Address: Pallabi, Mirpur 11</li>
           </ul>
         </section>
 
