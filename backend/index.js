@@ -6,7 +6,6 @@ import path from "path";
 import { fileURLToPath } from "url";
 import { Server } from "socket.io";
 import helmet from "helmet";
-import mongoSanitize from "express-mongo-sanitize";
 import { connectDB } from "./config/db.js";
 import authRoutes from "./routes/authRoutes.js";
 import categoryRoutes from "./routes/categoryRoutes.js";
@@ -87,9 +86,6 @@ app.use(helmet({
     preload: true,
   },
 }));
-
-// SECURITY: Sanitize data against NoSQL injection
-app.use(mongoSanitize());
 
 // SECURITY: Rate limiting & input validation middleware
 const requestLimiter = (req, res, next) => {
