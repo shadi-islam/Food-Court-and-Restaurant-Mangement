@@ -91,6 +91,46 @@
   transform: translateY(1px);
 }
 
+.button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Consent section */
+.consentGroup {
+  margin-top: 12px;
+  text-align: left;
+  font-size: 12px;
+}
+
+.consentLabel {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  cursor: pointer;
+  color: #3f3f3f;
+  line-height: 1.4;
+}
+
+.checkbox {
+  width: 16px;
+  height: 16px;
+  margin-top: 2px;
+  flex-shrink: 0;
+  cursor: pointer;
+  accent-color: #f9a826;
+}
+
+.link {
+  color: #f9a826;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.link:hover {
+  text-decoration: underline;
+}
+
 @media (max-width: 480px) {
   .card {
     padding: 40px 18px;

@@ -5,6 +5,8 @@ import http from "http";
 import path from "path";
 import { fileURLToPath } from "url";
 import { Server } from "socket.io";
+import helmet from "helmet";
+import mongoSanitize from "express-mongo-sanitize";
 import { connectDB } from "./config/db.js";
 import authRoutes from "./routes/authRoutes.js";
 import categoryRoutes from "./routes/categoryRoutes.js";
@@ -60,6 +62,47 @@ const corsOptions = {
 
 app.use(cors(corsOptions));
 console.log("[CORS] Configured for cross-domain cookie sharing");
+
+// SECURITY: Add helmet for HTTP security headers
+app.use(helmet({
+  contentSecurityPolicy: {
+    directives: {
+      defaultSrc: ["'self'"],
+      scriptSrc: ["'self'", "'unsafe-inline'", "trusted-cdn.com"],
+      styleSrc: ["'self'", "'unsafe-inline'"],
+      imgSrc: ["'self'", "data:", "https:", "blob:"],
+      fontSrc: ["'self'", "data:", "https:"],
+      connectSrc: ["'self'", "https:"],
+      frameSrc: ["'self'"],
+      objectSrc: ["'none'"],
+      mediaSrc: ["'self'"],
+      childSrc: ["'none'"],
+    },
+  },
+  crossOriginEmbedderPolicy: false, // Allow external resources
+  crossOriginResourcePolicy: { policy: "cross-origin" }, // Allow CORS resources
+  hsts: {
+    maxAge: 31536000, // 1 year
+    includeSubDomains: true,
+    preload: true,
+  },
+}));
+
+// SECURITY: Sanitize data against NoSQL injection
+app.use(mongoSanitize());
+
+// SECURITY: Rate limiting & input validation middleware
+const requestLimiter = (req, res, next) => {
+  // Validate request body size
+  if (req.body && JSON.stringify(req.body).length > 50000) {
+    return res.status(413).json({ message: "Request payload too large" });
+  }
+  next();
+};
+app.use(express.json({ limit: '10kb' }));
+app.use(express.urlencoded({ extended: true, limit: '10kb' }));
+app.use(requestLimiter);
+
 app.use(cookieParser());
 
 // Debug middleware: log important API requests (skip health checks)

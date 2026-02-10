@@ -1,5 +1,6 @@
 import styles from "./Footer.module.css";
 import { useContext } from "react";
+import { Link } from "react-router-dom";
 import { AppContext } from "../context/AppContext";
 
 export default function Footer() {
@@ -79,8 +80,8 @@ export default function Footer() {
             <div className={styles.group}>
               <p className={styles.groupTitle}>Legal</p>
               <ul className={styles.list}>
-                <li><a href="/" className={styles.link}>Privacy</a></li>
-                <li><a href="/" className={styles.link}>Terms</a></li>
+                <li><Link to="/privacy-policy" className={styles.link}>Privacy Policy</Link></li>
+                <li><Link to="/terms-of-service" className={styles.link}>Terms of Service</Link></li>
               </ul>
             </div>
           </nav>

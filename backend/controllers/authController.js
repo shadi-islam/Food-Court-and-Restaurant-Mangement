@@ -1,6 +1,8 @@
 import User from "../models/userModel.js";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
+import { validateEmail, validateName, validatePassword } from "../utils/validators.js";
+
 // Generate JWT
 const generateToken = (res, payload) => {
   const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: "1d" });
@@ -28,16 +30,41 @@ const generateToken = (res, payload) => {
 export const registerUser = async (req, res) => {
   try {
     const { name, email, password } = req.body;
+    
+    // SECURITY: Input validation
     if (!name || !email || !password) {
       return res.json({
         message: "Please fill all the fields",
         success: false,
       });
     }
+
+    if (!validateEmail(email)) {
+      return res.json({
+        message: "Invalid email format",
+        success: false,
+      });
+    }
+
+    if (!validateName(name)) {
+      return res.json({
+        message: "Name must be between 2-100 characters and contain only letters, spaces, hyphens, or apostrophes",
+        success: false,
+      });
+    }
+
+    if (!validatePassword(password)) {
+      return res.json({
+        message: "Password must be at least 8 characters with uppercase, lowercase, and number",
+        success: false,
+      });
+    }
+
     const existingUser = await User.findOne({ email });
     if (existingUser) {
       return res.json({ message: "User already exists", success: false });
     }
+
     const hashedPassword = await bcrypt.hash(password, 10);
     const user = await User.create({ name, email, password: hashedPassword });
     return res.json({ message: "User registered successfully", success: true });
@@ -51,9 +78,18 @@ export const loginUser = async (req, res) => {
   try {
     const { email, password } = req.body;
     console.log(`[loginUser] Login attempt for email: ${email}`);
+    
+    // SECURITY: Input validation
     if (!email || !password) {
       return res.json({
         message: "Please fill all the fields",
+        success: false,
+      });
+    }
+
+    if (!validateEmail(email)) {
+      return res.json({
+        message: "Invalid email format",
         success: false,
       });
     }

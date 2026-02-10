@@ -38,16 +38,15 @@ const QrScannerModal = ({ onResult, onClose }) => {
       <div className={styles.modal}>
         <div className={styles.header}>
           <div className={styles.titleBlock}>
-            <div className={styles.kicker}>Secure Table Entry</div>
-            <h3 className={styles.title}>Scan your Table QR</h3>
+            <div className={styles.kicker}>Quick Table Access</div>
+            <h3 className={styles.title}>Scan Table QR Code</h3>
             <p className={styles.subtitle}>
-              Point your camera at the QR code on your table. You’ll enter instantly—no login needed.
+              Point your camera at the QR code on your table to quickly access the menu.
             </p>
 
-            <div className={styles.trustRow} aria-label="Trust indicators">
-              <span className={styles.trustPill}>🔒 Private</span>
-              <span className={styles.trustPill}>⚡ Fast</span>
-              <span className={styles.trustPill}>✅ Verified Table</span>
+            <div className={styles.infoRow}>
+              <span className={styles.infoPill}>📱 Camera Required</span>
+              <span className={styles.infoPill}>🔐 Secure Connection</span>
             </div>
           </div>
 

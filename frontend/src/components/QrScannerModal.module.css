@@ -87,6 +87,26 @@
   border: 1px solid rgba(11, 18, 32, 0.08);
 }
 
+.infoRow {
+  margin-top: 12px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.infoPill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 700;
+  color: rgba(11, 18, 32, 0.82);
+  background: rgba(11, 18, 32, 0.06);
+  border: 1px solid rgba(11, 18, 32, 0.08);
+}
+
 .closeBtn {
   position: absolute;
   top: 14px;
